@@ -26,7 +26,7 @@ void main() {
   group('viewport', () {
     test('default viewport does not change size', () {
       final game = BaseGame(); // default viewport
-      game.onResize(Vector2(100.0, 200.0));
+      game.onGameResize(Vector2(100.0, 200.0));
       expect(game.canvasSize, Vector2(100.0, 200.00));
       expect(game.size, Vector2(100.0, 200.00));
     });
@@ -34,7 +34,7 @@ void main() {
     test('fixed ratio viewport has perfect ratio', () {
       final game = BaseGame()
         ..viewport = FixedResolutionViewport(Vector2.all(50));
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
       expect(game.canvasSize, Vector2.all(200.00));
       expect(game.size, Vector2.all(50.00));
 
@@ -55,7 +55,7 @@ void main() {
     test('fixed ratio viewport maxes width', () {
       final game = BaseGame()
         ..viewport = FixedResolutionViewport(Vector2.all(50));
-      game.onResize(Vector2(100.0, 200.0));
+      game.onGameResize(Vector2(100.0, 200.0));
       expect(game.canvasSize, Vector2(100.0, 200.00));
       expect(game.size, Vector2.all(50.00));
 
@@ -77,7 +77,7 @@ void main() {
     test('fixed ratio viewport maxes height', () {
       final game = BaseGame()
         ..viewport = FixedResolutionViewport(Vector2(100.0, 400.0));
-      game.onResize(Vector2(100.0, 200.0));
+      game.onGameResize(Vector2(100.0, 200.0));
       expect(game.canvasSize, Vector2(100.0, 200.00));
       expect(game.size, Vector2(100.00, 400.0));
 
@@ -100,7 +100,7 @@ void main() {
   group('camera', () {
     test('default camera applies no translation', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(100.0));
+      game.onGameResize(Vector2.all(100.0));
       expect(game.camera.position, Vector2.zero());
 
       final p = TestComponent(Vector2.all(10.0));
@@ -119,7 +119,7 @@ void main() {
 
     test('camera snap movement', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(100.0));
+      game.onGameResize(Vector2.all(100.0));
       expect(game.camera.position, Vector2.zero());
 
       final p = TestComponent(Vector2.all(10.0));
@@ -145,7 +145,7 @@ void main() {
 
     test('camera smooth movement', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(100.0));
+      game.onGameResize(Vector2.all(100.0));
 
       game.camera.speed = 1; // 1 pixel per second
       game.camera.moveTo(Vector2(0.0, 10.0));
@@ -162,7 +162,7 @@ void main() {
 
     test('camera follow', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(100.0));
+      game.onGameResize(Vector2.all(100.0));
 
       final p = TestComponent(Vector2.all(10.0))..anchor = Anchor.center;
       game.add(p);
@@ -190,7 +190,7 @@ void main() {
 
     test('camera follow with relative position', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(100.0));
+      game.onGameResize(Vector2.all(100.0));
 
       final p = TestComponent(Vector2.all(10.0))..anchor = Anchor.center;
       game.add(p);
@@ -217,7 +217,7 @@ void main() {
     });
     test('camera follow with world boundaries', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(100.0));
+      game.onGameResize(Vector2.all(100.0));
 
       final p = TestComponent(Vector2.all(10.0))..anchor = Anchor.center;
       game.add(p);
@@ -250,7 +250,7 @@ void main() {
     });
     test('camera follow with world boundaries smaller than the screen', () {
       final game = BaseGame(); // no camera changes
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
 
       final p = TestComponent(Vector2.all(10.0))..anchor = Anchor.center;
       game.add(p);
@@ -274,7 +274,7 @@ void main() {
     });
     test('camera relative offset without follow', () {
       final game = BaseGame();
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
 
       game.camera.setRelativeOffset(Anchor.center);
 
@@ -287,7 +287,7 @@ void main() {
 
     test('camera zoom', () {
       final game = BaseGame();
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
       game.camera.zoom = 2;
 
       final p = TestComponent(Vector2.all(100.0))..anchor = Anchor.center;
@@ -307,7 +307,7 @@ void main() {
 
     test('camera zoom with setRelativeOffset', () {
       final game = BaseGame();
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
       game.camera.zoom = 2;
       game.camera.setRelativeOffset(Anchor.center);
 
@@ -331,7 +331,7 @@ void main() {
     test('camera shake should return to where it started', () {
       final game = BaseGame();
       final camera = game.camera;
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
       expect(camera.position, Vector2.zero());
       camera.shake(duration: 9000);
       game.update(5000);
@@ -345,7 +345,7 @@ void main() {
     test('default ratio viewport + camera with world boundaries', () {
       final game = BaseGame()
         ..viewport = FixedResolutionViewport(Vector2.all(100));
-      game.onResize(Vector2.all(200.0));
+      game.onGameResize(Vector2.all(200.0));
       expect(game.canvasSize, Vector2.all(200.00));
       expect(game.size, Vector2.all(100.00));
 
