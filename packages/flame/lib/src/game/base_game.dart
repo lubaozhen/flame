@@ -127,10 +127,6 @@ class BaseGame extends Game {
       );
     }
 
-    if (debugMode && c is Component) {
-      c.debugMode = true;
-    }
-
     // First time resize
     c.onGameResize(size);
   }
@@ -174,17 +170,15 @@ class BaseGame extends Game {
   @override
   @mustCallSuper
   void update(double dt) {
-    children.updateComponentList();
+    super.update(dt);
 
     if (this is HasCollidables) {
       (this as HasCollidables).handleCollidables();
     }
 
-    children.forEach((c) => c.update(dt));
     camera.update(dt);
   }
 
-  // TODO(spydon): Should this be renamed?
   /// This implementation of resize passes the resize call along to every
   /// component in the list, enabling each one to make their decisions as how to
   /// handle the resize.
@@ -201,15 +195,6 @@ class BaseGame extends Game {
     viewport.resize(canvasSize.clone());
     super.onGameResize(canvasSize);
   }
-
-  /// Returns whether this [Game] is in debug mode or not.
-  ///
-  /// Returns `false` by default. Override it, or set it to true, to use debug
-  /// mode.
-  /// You can use this value to enable debug behaviors for your game and many
-  /// components will
-  /// show extra information on the screen when debug mode is activated
-  bool debugMode = false;
 
   /// Changes the priority of [component] and reorders the games component list.
   ///
@@ -228,8 +213,8 @@ class BaseGame extends Game {
     }
     component.changePriorityWithoutResorting(priority);
     if (reorderRoot) {
-      if (component.parent != null && component.parent is Component) {
-        (component.parent! as Component).reorderChildren();
+      if (component.parent != null) {
+        component.parent!.reorderChildren();
       } else if (contains(component)) {
         children.rebalanceAll();
       }
@@ -250,8 +235,8 @@ class BaseGame extends Game {
         reorderRoot: false,
       );
       if (wasUpdated) {
-        if (component.parent != null && component.parent is Component) {
-          parents.add(component.parent! as Component);
+        if (component.parent != null) {
+          parents.add(component.parent!);
         } else {
           hasRootComponents |= contains(component);
         }
